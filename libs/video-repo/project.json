@@ -1,0 +1,29 @@
+{
+  "name": "video-repo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/video-repo/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/video-repo",
+        "main": "libs/video-repo/src/index.ts",
+        "tsConfig": "libs/video-repo/tsconfig.lib.json",
+        "assets": ["libs/video-repo/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/video-repo/**/*.ts",
+          "libs/video-repo/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

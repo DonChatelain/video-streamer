@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@org/video-repo": ["libs/video-repo/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

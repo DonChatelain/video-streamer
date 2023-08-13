@@ -1,7 +1,7 @@
 {
-  "name": "video-streamer",
+  "name": "client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/video-streamer/src",
+  "sourceRoot": "apps/client/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,19 +10,16 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "dist/apps/video-streamer",
-        "index": "apps/video-streamer/src/index.html",
+        "outputPath": "dist/apps/client",
+        "index": "apps/client/src/index.html",
         "baseHref": "/",
-        "main": "apps/video-streamer/src/main.tsx",
-        "tsConfig": "apps/video-streamer/tsconfig.app.json",
-        "assets": [
-          "apps/video-streamer/src/favicon.ico",
-          "apps/video-streamer/src/assets"
-        ],
-        "styles": ["apps/video-streamer/src/styles.css"],
+        "main": "apps/client/src/main.tsx",
+        "tsConfig": "apps/client/tsconfig.app.json",
+        "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
+        "styles": ["apps/client/src/styles.css"],
         "scripts": [],
         "isolatedConfig": true,
-        "webpackConfig": "apps/video-streamer/webpack.config.js"
+        "webpackConfig": "apps/client/webpack.config.js"
       },
       "configurations": {
         "development": {
@@ -34,8 +31,8 @@
         "production": {
           "fileReplacements": [
             {
-              "replace": "apps/video-streamer/src/environments/environment.ts",
-              "with": "apps/video-streamer/src/environments/environment.prod.ts"
+              "replace": "apps/client/src/environments/environment.ts",
+              "with": "apps/client/src/environments/environment.prod.ts"
             }
           ],
           "optimization": true,
@@ -51,15 +48,15 @@
       "executor": "@nx/webpack:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "video-streamer:build",
+        "buildTarget": "client:build",
         "hmr": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "video-streamer:build:development"
+          "buildTarget": "client:build:development"
         },
         "production": {
-          "buildTarget": "video-streamer:build:production",
+          "buildTarget": "client:build:production",
           "hmr": false
         }
       }
@@ -68,20 +65,20 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/video-streamer/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/client/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "video-streamer:build"
+        "buildTarget": "client:build"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/video-streamer/jest.config.ts",
+        "jestConfig": "apps/client/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
