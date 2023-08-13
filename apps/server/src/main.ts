@@ -23,7 +23,7 @@ app.get('/videos', async (req, res) => {
 
 app.get('/videos/:title', async (req, res) => {
   try {
-    const rangeHeader = req.query.range || '0';
+    const rangeHeader = req.headers.range;
 
     // split the range header
     const splittedRange = (rangeHeader as string)
@@ -31,21 +31,27 @@ app.get('/videos/:title', async (req, res) => {
       .split('-');
     const start = parseInt(splittedRange[0]);
 
-    const { stream, size } = await VideoRepo.getVideo(req.params.title);
+    const title = req.params.title.replace('.mp4', '');
+
+    const fileData = await VideoRepo.getFileStat(title);
 
     // decide the end byte considering chunk size
-    const end = splittedRange[1] ? parseInt(splittedRange[1], 10) : size - 1;
+    const end = splittedRange[1]
+      ? parseInt(splittedRange[1], 10)
+      : fileData.size - 1;
 
     // calculate content length
     const contentLength = end - start + 1;
 
     // create and set response headers
     const headers = {
-      'Content-Range': `bytes ${start}-${end}/${size}`,
+      'Content-Range': `bytes ${start}-${end}/${fileData.size}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': contentLength,
       'Content-Type': 'video/mp4',
     };
+
+    const stream = await VideoRepo.getVideo(title, start, end);
 
     res.writeHead(206, headers);
     stream.pipe(res);

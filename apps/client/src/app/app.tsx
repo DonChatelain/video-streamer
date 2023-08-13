@@ -1,6 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useEffect, useState } from 'react';
 import styles from './app.module.css';
+import { Link } from 'react-router-dom';
 
 interface Movie {
   title: string;
@@ -8,20 +8,10 @@ interface Movie {
 }
 
 export function App() {
-  const [vids, setVids] = useState<string[]>([]);
-  useEffect(() => {
-    fetch('http://localhost:3333/videos')
-      .then((res) => res.json())
-      .then((data) => setVids(data.files));
-  }, []);
-
   return (
-    <div className={styles.movieList}>
-      {vids.map((m, i) => (
-        <div key={i} className={styles.movieItem}>
-          <p>{m}</p>
-        </div>
-      ))}
+    <div>
+      <h1>App</h1>
+      <Link to={'/videos'}>Videos</Link>
     </div>
   );
 }

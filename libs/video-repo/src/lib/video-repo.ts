@@ -1,33 +1,36 @@
-import { ReadStream, createReadStream, readFile, readdir } from 'fs';
+import { createReadStream, readdir } from 'fs';
 import { stat } from 'fs/promises';
 import path = require('path');
 
-export class VideoRepo {
-  public static async getVideo(filename: string) {
-    const fileData = await stat(path.resolve('data', `${filename}.mp4`));
-    const stream = createReadStream(path.resolve('data', `${filename}.mp4`), {
-      start: 0,
-      end: fileData.size - 1,
-    });
+const storagePath = '/Volumes/Big Boi/Movies';
 
-    return { stream, size: fileData.size };
+export class VideoRepo {
+  public static async getFileStat(filename: string) {
+    return await stat(path.resolve(storagePath, `${filename}.mp4`));
+  }
+
+  public static async getVideo(filename: string, start: number, end: number) {
+    const stream = createReadStream(
+      path.resolve(storagePath, `${filename}.mp4`),
+      {
+        start,
+        end,
+      }
+    );
+
+    return stream;
   }
   public static async getList(): Promise<string[]> {
     return await new Promise((resolve, reject) => {
-      readdir(path.resolve('data'), (err, fileList) => {
+      readdir(path.resolve(storagePath), (err, fileList) => {
         if (err) reject(err);
-        else resolve(fileList.filter((file) => file !== '.DS_Store'));
+        else
+          resolve(
+            fileList.filter(
+              (file) => !file.startsWith('.') && file.endsWith('.mp4')
+            )
+          );
       });
     });
-  }
-
-  public static async test() {
-    try {
-      const files = await this.getList();
-      const vid = await this.getVideo(files[0]);
-      return vid;
-    } catch (e) {
-      console.error(e);
-    }
   }
 }
