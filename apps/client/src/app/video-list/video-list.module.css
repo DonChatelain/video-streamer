@@ -16,13 +16,24 @@
 
 .movieItem > div:first-child {
   padding: 20px;
-
   width: 70%;
 }
 
 .movieItem > div:last-child {
   padding: 20px;
-
   text-align: right;
   width: 30%;
+}
+
+.controls {
+}
+
+.buttonActive {
+  background: salmon;
+  color: white;
+  border: 3px solid transparent;
+}
+
+.stats {
+  margin: 10px 0;
 }
