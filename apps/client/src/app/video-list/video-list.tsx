@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
 import styles from './video-list.module.css';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { VideoListItem } from '@org/video-repo';
-import { humanFileSize } from '../util';
 import { useQuery } from '@tanstack/react-query';
+import { VideoItem } from './video-item';
 
 /* eslint-disable-next-line */
 export interface VideoListProps {}
@@ -37,7 +37,7 @@ export function VideoList(props: VideoListProps) {
     queryFn: getNrop,
   });
 
-  if (movieQuery.error instanceof Error) {
+  if (movieQuery.error instanceof Error || videoQuery.error instanceof Error) {
     return <div>Failed to fetch data</div>;
   }
 
@@ -79,30 +79,6 @@ export function VideoList(props: VideoListProps) {
           ))}
       </div>
     </Suspense>
-  );
-}
-
-interface VideoItemProps {
-  videoItem: VideoListItem;
-}
-
-function VideoItem({ videoItem }: VideoItemProps) {
-  return (
-    <div className={styles.movieItem} id={videoItem.filename}>
-      <div>
-        <Link
-          to={`/videos/${videoItem.filename}`}
-          state={{
-            fullPath: videoItem.fullPath,
-          }}
-        >
-          <span>{videoItem.filename}</span>
-        </Link>
-      </div>
-      <div>
-        <span>{humanFileSize(videoItem.size)}</span>
-      </div>
-    </div>
   );
 }
 
