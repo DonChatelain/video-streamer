@@ -1,7 +1,28 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.movieList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* width: 100%; */
+}
+
+.movieItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(178, 178, 178);
+}
+
+.movieItem > div:first-child {
+  padding: 20px;
+
+  width: 70%;
+}
+
+.movieItem > div:last-child {
+  padding: 20px;
+
+  text-align: right;
+  width: 30%;
+}

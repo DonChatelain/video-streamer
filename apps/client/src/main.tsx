@@ -11,6 +11,6 @@ const router = createBrowserRouter(routes);
 
 root.render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router}></RouterProvider>
   </StrictMode>
 );

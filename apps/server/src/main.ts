@@ -13,15 +13,16 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/videos', async (req, res) => {
+  const { fileExt } = req.query;
   try {
-    const files = await VideoRepo.getList();
+    const files = await new VideoRepo().getList();
     res.json({ files });
   } catch (error) {
     res.json({ error });
   }
 });
 
-app.get('/videos/:title', async (req, res) => {
+app.get('/videos/watch', async (req, res) => {
   try {
     const rangeHeader = req.headers.range;
 
@@ -31,8 +32,8 @@ app.get('/videos/:title', async (req, res) => {
       .split('-');
     const start = parseInt(splittedRange[0]);
 
-    const title = req.params.title.replace('.mp4', '');
-
+    // const title = req.query.title+''.replace('.mp4', '');
+    const title = req.query.path + '';
     const fileData = await VideoRepo.getFileStat(title);
 
     // decide the end byte considering chunk size
