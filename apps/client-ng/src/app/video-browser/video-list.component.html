@@ -1,0 +1,42 @@
+<div class="video-list">
+  <div class="controls">
+    <button
+      (click)="toggleMovies()"
+      [classList]="isToggleActive('movies') ? 'active' : ''"
+    >
+      Movies
+    </button>
+    <button
+      (click)="toggleVideos()"
+      [classList]="isToggleActive('videos') ? 'active' : ''"
+    >
+      Videos
+    </button>
+  </div>
+  <div class="stats">{{ movies.length }} movies</div>
+  <div class="list-container" *ngIf="isToggleActive('movies')">
+    <div class="list-item" *ngFor="let movie of movies">
+      <a
+        [href]="
+          '/videos/watch/' + movie.filename + '?fullPath=' + movie.fullPath
+        "
+        ><div>{{ movie.filename }}</div></a
+      >
+      <div>{{ movie.size }}</div>
+    </div>
+  </div>
+  <div class="list-container" *ngIf="isToggleActive('videos')">
+    <div class="list-item" *ngFor="let video of videos">
+      <a
+        [href]="
+          '/videos/watch/' + video.filename + '?fullPath=' + video.fullPath
+        "
+        ><div>{{ video.filename }}</div></a
+      >
+      <!-- <a href="/shit"
+        ><div>{{ video.filename }}</div></a
+      > -->
+      <div>{{ video.size }}</div>
+    </div>
+  </div>
+</div>

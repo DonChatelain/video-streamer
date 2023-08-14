@@ -1,0 +1,23 @@
+/* .video-list {
+} */
+
+/* button {
+} */
+
+button.active {
+  background-color: salmon;
+  color: white;
+  border: 3px solid transparent;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item {
+  width: 100%;
+  border-bottom: 1px solid lightblue;
+  display: flex;
+  justify-content: space-between;
+}

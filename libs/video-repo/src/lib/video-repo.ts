@@ -1,6 +1,7 @@
 import { createReadStream } from 'fs';
 import { readdir, stat } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
+import { VideoListItem } from './types';
 
 const volume = '/Volumes/Big Boi';
 
@@ -101,9 +102,3 @@ export class VideoRepo {
     return blackListed;
   }
 }
-
-export type VideoListItem = {
-  filename: string;
-  fullPath: string;
-  size: number;
-};

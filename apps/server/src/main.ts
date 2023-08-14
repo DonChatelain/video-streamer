@@ -15,7 +15,7 @@ app.get('/api', (req, res) => {
 app.get('/videos', async (req, res) => {
   const { folder } = req.query;
   try {
-    const files = await new VideoRepo(folder as string).getList();
+    const files = await new VideoRepo(String(folder)).getList();
     res.json({ files });
   } catch (error) {
     res.json({ error });
