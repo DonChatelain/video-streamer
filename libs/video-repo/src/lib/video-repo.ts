@@ -2,9 +2,15 @@ import { createReadStream } from 'fs';
 import { readdir, stat } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
 
-const storagePath = '/Volumes/Big Boi/Movies';
+const volume = '/Volumes/Big Boi';
 
 export class VideoRepo {
+  storagePath: string;
+
+  constructor(folder = 'Movies') {
+    this.storagePath = `${volume}/${folder}`;
+  }
+
   public static async getFileStat(filename: string) {
     return await stat(pathResolve(`${filename}`));
   }
@@ -20,7 +26,7 @@ export class VideoRepo {
 
   public async getList() {
     try {
-      const fileList = await this.getFiles(pathResolve(storagePath));
+      const fileList = await this.getFiles(pathResolve(this.storagePath));
 
       const filesWithPaths = fileList.map((f) => ({
         fullPath: f,

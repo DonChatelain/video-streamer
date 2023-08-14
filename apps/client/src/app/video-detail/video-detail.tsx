@@ -16,7 +16,7 @@ export function VideoDetail(props: VideoDetailProps) {
   return (
     <div className={styles.container}>
       <h1>{filename}</h1>
-      <video className={styles.video} controls preload="auto">
+      <video className={styles.video} controls preload="auto" autoPlay>
         <source
           src={`${STREAM_URL}/watch?path=${location.state.fullPath}`}
           type="video/mp4"

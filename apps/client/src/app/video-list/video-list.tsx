@@ -9,54 +9,82 @@ import {
 import { VideoListItem } from '@org/video-repo';
 import { humanFileSize } from '../util';
 import { useScroll, useScrollIntoView } from '@react-hooks-library/core';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 /* eslint-disable-next-line */
 export interface VideoListProps {}
 
+async function getMovies(): Promise<{ files: VideoListItem[] }> {
+  return (await fetch(`http://localhost:3333/videos?folder=Movies`)).json();
+}
+async function getNrop(): Promise<{ files: VideoListItem[] }> {
+  return (await fetch(`http://localhost:3333/videos?folder=Videos`)).json();
+}
+
 export function VideoList(props: VideoListProps) {
-  const [searchParams] = useSearchParams();
-  const [vids, setVids] = useState<VideoListItem[]>([]);
   const box = useRef<HTMLDivElement | null>(null);
+  const [viewToggle, setViewToggle] = useState<'movies' | 'videos'>('movies');
 
-  useEffect(() => {
-    fetch(
-      `http://localhost:3333/videos?fileExt=${
-        searchParams.get('fileExt') || ''
-      }`
-    )
-      .then((res) => res.json())
-      .then((data) => setVids(data.files));
+  const movieQuery = useQuery({
+    queryKey: ['movies'],
+    queryFn: getMovies,
+  });
 
-    // addEventListener('scroll', function (ev) {
-    //   const listItems = document.querySelectorAll(`.${styles.movieItem}`);
-    //   listItems.forEach(item => {
-    //     if (this.scrollY)
-    //   })
-    // })
-  }, []);
+  const videoQuery = useQuery({
+    queryKey: ['videos'],
+    queryFn: getNrop,
+  });
+
+  if (movieQuery.error instanceof Error) {
+    return <div>Failed to fetch data</div>;
+  }
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
+      <div className={styles.controls}>
+        <button value={'movies'} onClick={() => setViewToggle('movies')}>
+          Movies
+        </button>
+        <button value={'videos'} onClick={() => setViewToggle('videos')}>
+          Videos
+        </button>
+      </div>
       <div className={styles.movieList} ref={box}>
-        {vids.map((m, i) => (
-          <div key={i} className={styles.movieItem} id={i.toString()}>
-            <div>
-              <Link
-                to={`/videos/${m.filename}`}
-                state={{
-                  fullPath: m.fullPath,
-                }}
-              >
-                <span>{m.filename}</span>
-              </Link>
-            </div>
-            <div>
-              <span>{humanFileSize(m.size)}</span>
-            </div>
-          </div>
-        ))}
+        {viewToggle === 'movies' &&
+          movieQuery.data?.files.map((m, i) => (
+            <VideoItem videoItem={m} key={i} />
+          ))}
+
+        {viewToggle === 'videos' &&
+          videoQuery.data?.files.map((m, i) => (
+            <VideoItem videoItem={m} key={i} />
+          ))}
       </div>
     </Suspense>
+  );
+}
+
+interface VideoItemProps {
+  videoItem: VideoListItem;
+}
+
+function VideoItem({ videoItem }: VideoItemProps) {
+  return (
+    <div className={styles.movieItem} id={videoItem.filename}>
+      <div>
+        <Link
+          to={`/videos/${videoItem.filename}`}
+          state={{
+            fullPath: videoItem.fullPath,
+          }}
+        >
+          <span>{videoItem.filename}</span>
+        </Link>
+      </div>
+      <div>
+        <span>{humanFileSize(videoItem.size)}</span>
+      </div>
+    </div>
   );
 }
 

@@ -13,15 +13,16 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/videos', async (req, res) => {
-  const { fileExt } = req.query;
+  const { folder } = req.query;
   try {
-    const files = await new VideoRepo().getList();
+    const files = await new VideoRepo(folder as string).getList();
     res.json({ files });
   } catch (error) {
     res.json({ error });
   }
 });
 
+// TODO: refactor and move to VideoRepo
 app.get('/videos/watch', async (req, res) => {
   try {
     const rangeHeader = req.headers.range;
@@ -30,9 +31,9 @@ app.get('/videos/watch', async (req, res) => {
     const splittedRange = (rangeHeader as string)
       .replace(/bytes=/, '')
       .split('-');
+
     const start = parseInt(splittedRange[0]);
 
-    // const title = req.query.title+''.replace('.mp4', '');
     const title = req.query.path + '';
     const fileData = await VideoRepo.getFileStat(title);
 
@@ -44,7 +45,6 @@ app.get('/videos/watch', async (req, res) => {
     // calculate content length
     const contentLength = end - start + 1;
 
-    // create and set response headers
     const headers = {
       'Content-Range': `bytes ${start}-${end}/${fileData.size}`,
       'Accept-Ranges': 'bytes',
@@ -62,6 +62,7 @@ app.get('/videos/watch', async (req, res) => {
 });
 
 const port = process.env.PORT || 3333;
+
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
