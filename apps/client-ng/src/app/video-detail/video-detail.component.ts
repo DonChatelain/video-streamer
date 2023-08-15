@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { VideoService } from '../video-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSerializer } from '@angular/router';
+import { VideoListItem } from '@org/types';
 
 @Component({
   providers: [VideoService],
@@ -13,10 +14,24 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./video-detail.component.css'],
 })
 export class VideoDetailComponent implements OnInit {
+  // video!: VideoListItem;
+  videoFilename = '';
+  videoFullPath = '';
+
   constructor(
     private videoService: VideoService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private urlSerializer: UrlSerializer
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params) => {
+      this.videoFilename = params.get('filename') || 'Filename Not Found';
+      this.videoFullPath = params.get('fullPath') || '';
+    });
+  }
+
+  getVideoSource(path: string) {
+    return this.videoService.getVideoSourceUrl(path);
+  }
 }

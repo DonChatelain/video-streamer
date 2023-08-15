@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
 import styles from './video-list.module.css';
 import { useSearchParams } from 'react-router-dom';
-import { VideoListItem } from '@org/video-repo';
 import { useQuery } from '@tanstack/react-query';
 import { VideoItem } from './video-item';
+import { VideoListItem } from '@org/types';
 
 /* eslint-disable-next-line */
 export interface VideoListProps {}

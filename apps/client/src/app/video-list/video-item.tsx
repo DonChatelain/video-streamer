@@ -1,7 +1,7 @@
-import { VideoListItem } from '@org/video-repo';
 import styles from './video-list.module.css';
 import { Link } from 'react-router-dom';
 import { humanFileSize } from '../util';
+import { VideoListItem } from '@org/types';
 
 interface VideoItemProps {
   videoItem: VideoListItem;

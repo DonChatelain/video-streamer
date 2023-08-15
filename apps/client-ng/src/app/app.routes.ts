@@ -4,13 +4,18 @@ import { VideoDetailComponent } from './video-detail/video-detail.component';
 
 export const appRoutes: Route[] = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'videos',
+  },
+  {
     path: 'videos',
     component: VideoListComponent,
   },
   {
-    path: 'videos/watch/:filename',
+    path: 'videos/watch',
     component: VideoDetailComponent,
     // redirectTo: 'videos',
-    pathMatch: 'full',
+    // pathMatch: 'full',
   },
 ];

@@ -13,12 +13,19 @@
       Videos
     </button>
   </div>
-  <div class="stats">{{ movies.length }} movies</div>
+  <div class="stats">
+    <div *ngIf="viewToggle === 'movies'">{{ movies.length }} movies</div>
+    <div *ngIf="viewToggle === 'videos'">{{ videos.length }} movies</div>
+  </div>
   <div class="list-container" *ngIf="isToggleActive('movies')">
     <div class="list-item" *ngFor="let movie of movies">
       <a
         [href]="
-          '/videos/watch/' + movie.filename + '?fullPath=' + movie.fullPath
+          '/videos/watch' +
+          '?fullPath=' +
+          movie.fullPath +
+          '&filename=' +
+          movie.filename
         "
         ><div>{{ movie.filename }}</div></a
       >
@@ -29,13 +36,14 @@
     <div class="list-item" *ngFor="let video of videos">
       <a
         [href]="
-          '/videos/watch/' + video.filename + '?fullPath=' + video.fullPath
+          '/videos/watch' +
+          '?fullPath=' +
+          video.fullPath +
+          '&filename=' +
+          video.filename
         "
         ><div>{{ video.filename }}</div></a
       >
-      <!-- <a href="/shit"
-        ><div>{{ video.filename }}</div></a
-      > -->
       <div>{{ video.size }}</div>
     </div>
   </div>

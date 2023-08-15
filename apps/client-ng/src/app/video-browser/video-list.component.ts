@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSerializer, UrlTree } from '@angular/router';
 import { VideoService } from '../video-service.service';
-import { VideoListItem } from 'libs/video-repo/src/lib/types';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { VideoListItem } from '@org/types';
 
 @Component({
   providers: [VideoService],
@@ -18,17 +18,19 @@ export class VideoListComponent implements OnInit {
   movies: VideoListItem[] = [];
   videos: VideoListItem[] = [];
   @Input()
-  viewToggle: SupportedTab = 'movies';
+  viewToggle!: SupportedTab;
   videoSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private urlSerializer: UrlSerializer
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.route.queryParamMap.subscribe((params) => {
       this.viewToggle = (params.get('folder') as SupportedTab) || 'movies';
+      this.setQueryParams(this.viewToggle);
     });
 
     this.videoSub = this.videoService

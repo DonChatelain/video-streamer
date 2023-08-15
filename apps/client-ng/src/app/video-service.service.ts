@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { VideoListItem } from 'libs/video-repo/src/lib/types';
+import { VideoListItem } from '@org/types';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +19,10 @@ export class VideoService {
         this.handleError<{ files: VideoListItem[] }>('getHeroes', { files: [] })
       )
     );
+  }
+
+  getVideoSourceUrl(path: string) {
+    return `${this.origin}/watch?path=${path}`;
   }
 
   /**

@@ -1,7 +1,7 @@
+import { VideoListItem } from '@org/types';
 import { createReadStream } from 'fs';
 import { readdir, stat } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
-import { VideoListItem } from './types';
 
 const volume = '/Volumes/Big Boi';
 
